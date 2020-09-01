@@ -14,17 +14,18 @@ const notify = require('gulp-notify');
 const svgSprite = require('gulp-svg-sprite');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
-const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const fs = require('fs');
 const tiny = require('gulp-tinypng-compress');
-
-
+const rev = require('gulp-rev');
+const revRewrite = require('gulp-rev-rewrite');
+const revdel = require('gulp-rev-delete-original');
+const htmlmin = require('gulp-htmlmin');
 
 // DEV
 //svg sprite
 const svgSprites = () => {
-  return src('./src/img/**.svg')
+  return src('./src/img/svg/**.svg')
     .pipe(svgSprite({
       mode: {
         stack: {
@@ -41,12 +42,12 @@ const resources = () => {
 }
 
 const imgToApp = () => {
-  return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg'])
+	return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg', './src/img/*.svg'])
     .pipe(dest('./app/img'))
 }
 
 const htmlInclude = () => {
-  return src(['./src/index.html'])
+  return src(['./src/*.html'])
     .pipe(fileinclude({
       prefix: '@',
       basepath: '@file'
@@ -56,12 +57,51 @@ const htmlInclude = () => {
 }
 
 const fonts = () => {
-  src('./src/fonts/**.ttf')
-    .pipe(ttf2woff())
-    .pipe(dest('./app/fonts/'));
   return src('./src/fonts/**.ttf')
     .pipe(ttf2woff2())
     .pipe(dest('./app/fonts/'));
+}
+
+const checkWeight = (fontname) => {
+  let weight = 400;
+  switch (true) {
+    case /Thin/.test(fontname):
+      weight = 100;
+      break;
+    case /ExtraLight/.test(fontname):
+      weight = 200;
+      break;
+    case /Light/.test(fontname):
+      weight = 300;
+      break;
+    case /Regular/.test(fontname):
+      weight = 400;
+      break;
+    case /Medium/.test(fontname):
+      weight = 500;
+      break;
+    case /SemiBold/.test(fontname):
+      weight = 600;
+      break;
+    case /Semi/.test(fontname):
+      weight = 600;
+      break;
+    case /Bold/.test(fontname):
+      weight = 700;
+      break;
+    case /ExtraBold/.test(fontname):
+      weight = 800;
+      break;
+    case /Heavy/.test(fontname):
+      weight = 700;
+      break;
+    case /Black/.test(fontname):
+      weight = 900;
+      break;
+    default:
+      weight = 400;
+  }
+  return weight;
 }
 
 const cb = () => {}
@@ -77,10 +117,13 @@ const fontsStyle = (done) => {
     if (items) {
       let c_fontname;
       for (var i = 0; i < items.length; i++) {
-        let fontname = items[i].split('.');
-        fontname = fontname[0];
+				let fontname = items[i].split('.');
+				fontname = fontname[0];
+        let font = fontname.split('-')[0];
+        let weight = checkWeight(fontname);
+
         if (c_fontname != fontname) {
-          fs.appendFile(srcFonts, '@include font-face("' + fontname + '", "' + fontname + '", 400);\r\n', cb);
+          fs.appendFile(srcFonts, '@include font-face("' + font + '", "' + fontname + '", ' + weight +');\r\n', cb);
         }
         c_fontname = fontname;
       }
@@ -154,7 +197,7 @@ const watchFiles = () => {
   watch('./src/scss/**/*.scss', styles);
   watch('./src/js/**/*.js', scripts);
   watch('./src/html/*.html', htmlInclude);
-  watch('./src/index.html', htmlInclude);
+  watch('./src/*.html', htmlInclude);
   watch('./src/resources/**', resources);
   watch('./src/img/**.jpg', imgToApp);
   watch('./src/img/**.jpeg', imgToApp);
@@ -181,9 +224,11 @@ exports.default = series(clean, parallel(htmlInclude, scripts, fonts, resources,
 const tinypng = () => {
   return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg'])
     .pipe(tiny({
-      key: '9JGFXhzcvJn1G7PvGRBmZMspkDDtGpwV',
+      key: 'HkdjDW01hVL5Db6HXSYlnHMk9HCvQfDT',
       sigFile: './app/img/.tinypng-sigs',
-      log: true
+      parallel: true,
+      parallelMax: 50,
+      log: true,
     }))
     .pipe(dest('./app/img'))
 }
@@ -235,9 +280,37 @@ const scriptsBuild = () => {
     .pipe(dest('./app/js'))
 }
 
-exports.tinypng = tinypng;
+const cache = () => {
+  return src('app/**/*.{css,js,svg,png,jpg,jpeg,woff2}', {
+    base: 'app'})
+    .pipe(rev())
+    .pipe(revdel())
+    .pipe(dest('app'))
+    .pipe(rev.manifest('rev.json'))
+    .pipe(dest('app'));
+};
 
-exports.build = series(clean, parallel(htmlInclude, scriptsBuild, fonts, resources, imgToApp, svgSprites), fontsStyle, stylesBuild, tinypng);
+const rewrite = () => {
+  const manifest = src('app/rev.json');
+
+  return src('app/**/*.html')
+    .pipe(revRewrite({
+      manifest
+    }))
+    .pipe(dest('app'));
+}
+
+const htmlMinify = () => {
+	return src('app/**/*.html')
+		.pipe(htmlmin({
+			collapseWhitespace: true
+		}))
+		.pipe(dest('app'));
+}
+
+exports.cache = series(cache, rewrite);
+
+exports.build = series(clean, parallel(htmlInclude, scriptsBuild, fonts, resources, imgToApp, svgSprites), fontsStyle, stylesBuild, htmlMinify, tinypng);
 
 
 // deploy
