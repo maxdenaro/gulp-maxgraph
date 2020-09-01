@@ -224,7 +224,7 @@ exports.default = series(clean, parallel(htmlInclude, scripts, fonts, resources,
 const tinypng = () => {
   return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg'])
     .pipe(tiny({
-      key: 'HkdjDW01hVL5Db6HXSYlnHMk9HCvQfDT',
+      key: '',
       sigFile: './app/img/.tinypng-sigs',
       parallel: true,
       parallelMax: 50,
