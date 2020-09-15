@@ -202,7 +202,7 @@ const watchFiles = () => {
   watch('./src/img/**.jpg', imgToApp);
   watch('./src/img/**.jpeg', imgToApp);
   watch('./src/img/**.png', imgToApp);
-  watch('./src/img/**.svg', svgSprites);
+  watch('./src/img/svg/**.svg', svgSprites);
   watch('./src/fonts/**', fonts);
   watch('./src/fonts/**', fontsStyle);
 }
@@ -224,7 +224,7 @@ exports.default = series(clean, parallel(htmlInclude, scripts, fonts, resources,
 const tinypng = () => {
   return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg'])
     .pipe(tiny({
-      key: '',
+      key: 'HkdjDW01hVL5Db6HXSYlnHMk9HCvQfDT',
       sigFile: './app/img/.tinypng-sigs',
       parallel: true,
       parallelMax: 50,
