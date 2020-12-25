@@ -42,8 +42,8 @@ const resources = () => {
 }
 
 const imgToApp = () => {
-	return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg', './src/img/*.svg'])
-    .pipe(dest('./app/img'))
+	return src(['./src/img/**/*', "!src/img/svg/*", "!src/img/svg"], {base: "src"})
+    .pipe(dest('./app/'))
 }
 
 const htmlInclude = () => {
@@ -199,10 +199,8 @@ const watchFiles = () => {
   watch('./src/html/*.html', htmlInclude);
   watch('./src/*.html', htmlInclude);
   watch('./src/resources/**', resources);
-  watch('./src/img/**.jpg', imgToApp);
-  watch('./src/img/**.jpeg', imgToApp);
-  watch('./src/img/**.png', imgToApp);
-  watch('./src/img/svg/**.svg', svgSprites);
+  watch(['./src/img/svg/*.svg', './src/img/svg'], svgSprites);
+  watch(['./src/img/**/*', '!src/img/svg/*', '!src/img/svg'], imgToApp);
   watch('./src/fonts/**', fonts);
   watch('./src/fonts/**', fontsStyle);
 }
@@ -222,7 +220,7 @@ exports.default = series(clean, parallel(htmlInclude, scripts, fonts, resources,
 
 // BUILD
 const tinypng = () => {
-  return src(['./src/img/**.jpg', './src/img/**.png', './src/img/**.jpeg'])
+  return src(['./src/img/**/*', "!src/img/svg/*", "!src/img/svg"], {base: "src"})
     .pipe(tiny({
       key: 'HkdjDW01hVL5Db6HXSYlnHMk9HCvQfDT',
       sigFile: './app/img/.tinypng-sigs',
@@ -230,7 +228,7 @@ const tinypng = () => {
       parallelMax: 50,
       log: true,
     }))
-    .pipe(dest('./app/img'))
+    .pipe(dest('./app/'))
 }
 
 const stylesBuild = () => {
