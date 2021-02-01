@@ -36,10 +36,6 @@ ul {
   overflow: hidden;
 }
 
-.stop-scroll {
-  @include stop-scroll;
-}
-
 .is-hidden {
   display: none !important; // stylelint-disable-line declaration-no-important
 }
@@ -54,10 +50,6 @@ ul {
 
 .error {
   border: 2px #ff4019 solid !important; // stylelint-disable-line declaration-no-important
-}
-
-.visually-hidden {
-  @include visually-hidden;
 }
 
 .btn-reset {

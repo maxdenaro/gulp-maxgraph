@@ -1,9 +1,3 @@
-@import "vars";
-@import "mixins";
-@import "fonts";
-@import "vendor";
-@import "settings";
-
 // CUSTOM COMPONENTS STYLES
 // .burger {
 //   --burger-width: 40px;
@@ -12,3 +6,5 @@
 
 //   @include burger;
 // }
+
+@import "./components/header";

@@ -6,15 +6,19 @@
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#111111">
-	<title>New site</title>
-	<link rel="stylesheet" href="css/main.min.css">
+  <title>New site</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/vendor.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 	<div class="site-container">
-		@include('html/header.html')
-		@include('html/footer.html')
+		@include('partials/header.html')
+    @include('partials/footer.html')
+    asd
 		<!-- @include('html/h1.html') пример инклуда -->
-	</div>
+  </div>
+  <script src="js/vendor.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>
