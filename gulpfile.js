@@ -1,5 +1,6 @@
-const {src, dest, parallel, series, watch} = require('gulp');
+const {src, dest, series, watch} = require('gulp');
 const autoprefixer = require('gulp-autoprefixer');
+const babel = require('gulp-babel');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify-es').default;
 const del = require('del');
@@ -67,6 +68,9 @@ const scripts = () => {
   return src(
     ['./src/js/functions/**.js', './src/js/components/**.js', './src/js/main.js'])
     .pipe(gulpif(!isProd, sourcemaps.init()))
+		.pipe(babel({
+			presets: ['@babel/env']
+		}))
     .pipe(concat('main.js'))
     .pipe(gulpif(isProd, uglify().on("error", notify.onError())))
     .pipe(gulpif(!isProd, sourcemaps.write('.')))

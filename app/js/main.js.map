@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.js"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA","file":"main.js","sourcesContent":["/**\n  * название функции\n  *\n  * @param {number} first - первое число\n  * @returns {number}\n  */\n"]}
