@@ -137,15 +137,19 @@ const cache = () => {
   return src('app/**/*.{css,js,svg,png,jpg,jpeg,woff2}', {
     base: 'app'})
     .pipe(rev())
-    .pipe(dest('app'))
     .pipe(revDel())
+		.pipe(dest('app'))
     .pipe(rev.manifest('rev.json'))
     .pipe(dest('app'));
 };
 
 const rewrite = () => {
   const manifest = readFileSync('app/rev.json');
-
+	src('app/css/*.css')
+		.pipe(revRewrite({
+      manifest
+    }))
+		.pipe(dest('app/css'));
   return src('app/**/*.html')
     .pipe(revRewrite({
       manifest
