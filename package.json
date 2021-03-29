@@ -4,7 +4,12 @@
   "description": "gulp-builder for weblayout",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "html": "node-w3c-validator -f lint -evH -i app/**/*.html",
+		"dev": "gulp",
+		"build": "gulp build",
+		"cache": "gulp cache",
+    "backend": "gulp backend",
+    "code": "editorconfig-checker"
   },
   "author": "MaxGraph",
   "license": "ISC",
@@ -14,6 +19,7 @@
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.14",
     "del": "^6.0.0",
+    "editorconfig-checker": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
@@ -32,6 +38,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-svg-sprite": "^1.5.0",
     "gulp-uglify-es": "^2.0.0",
+    "node-w3c-validator": "^2.0.1",
     "stylelint": "^13.9.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
     "stylelint-order": "^4.1.0",
