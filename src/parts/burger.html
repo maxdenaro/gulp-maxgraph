@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>custom-checkbox</title>
+  <style>
+
+    /*
+      .burger {
+        --burger-width: 40px;
+        --burger-height: 20px;
+        --burger-line-height: 2px;
+
+        @include burger;
+      }
+
+      бургер использует переменные для размера
+
+      класс burger--active активирует бургер
+      ниже - js-код
+    */
+
+  </style>
+  <script>
+
+    const burger = document.querySelector('.burger');
+
+    burger.addEventListener('click', (e) => {
+      e.currentTarget.classList.toggle('burger--active');
+    });
+
+  </script>
+</head>
+<body>
+	<button class="burger">
+    <span class="burger__line"></span>
+    <span class="burger__line"></span>
+    <span class="burger__line"></span>
+  </button>
+</body>
+</html>
