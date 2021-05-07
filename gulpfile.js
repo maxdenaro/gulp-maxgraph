@@ -18,6 +18,7 @@ const notify = require('gulp-notify');
 const image = require('gulp-image');
 const { readFileSync } = require('fs');
 const concat = require('gulp-concat');
+const webp = require('gulp-webp');
 
 let isProd = false; // dev by default
 
@@ -106,6 +107,12 @@ const images = () => {
     .pipe(dest('./app/img'))
 };
 
+const webps = () => {
+  return src('./src/img/**/*.{png,jpg,jpeg}')
+  .pipe(webp())
+  .pipe(dest('./app/img/webp'))
+};
+
 const htmlInclude = () => {
   return src(['./src/*.html'])
     .pipe(fileInclude({
@@ -134,7 +141,7 @@ const watchFiles = () => {
 }
 
 const cache = () => {
-  return src('app/**/*.{css,js,svg,png,jpg,jpeg,woff2}', {
+  return src('app/**/*.{css,js,svg,png,jpg,jpeg,woff2,webp}', {
     base: 'app'})
     .pipe(rev())
     .pipe(revDel())
@@ -170,10 +177,10 @@ const toProd = (done) => {
   done();
 };
 
-exports.default = series(clean, htmlInclude, scripts, styles, resources, images, svgSprites, watchFiles);
+exports.default = series(clean, htmlInclude, scripts, styles, resources, images, webps, svgSprites, watchFiles);
 
-exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, svgSprites, htmlMinify);
+exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, webps, svgSprites, htmlMinify);
 
 exports.cache = series(cache, rewrite);
 
-exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, svgSprites);
+exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, webps, svgSprites);

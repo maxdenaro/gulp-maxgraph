@@ -38,6 +38,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-svg-sprite": "^1.5.0",
     "gulp-uglify-es": "^2.0.0",
+    "gulp-webp": "^4.0.1",
     "node-w3c-validator": "^2.0.1",
     "stylelint": "^13.9.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
