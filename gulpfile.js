@@ -18,6 +18,8 @@ const notify = require('gulp-notify');
 const image = require('gulp-image');
 const { readFileSync } = require('fs');
 const concat = require('gulp-concat');
+const ttf2woff = require('gulp-ttf2woff'); 
+const ttf2woff2 = require('gulp-ttf2woff2');
 
 let isProd = false; // dev by default
 
@@ -116,6 +118,16 @@ const htmlInclude = () => {
     .pipe(browserSync.stream());
 }
 
+const fonts = () => {
+  src('./src/resources/fonts/*.ttf')
+    .pipe(ttf2woff())
+    .pipe(dest('./app/fonts'));
+
+  return src('./src/resources/fonts/*.ttf')
+    .pipe(ttf2woff2())
+    .pipe(dest('./app/fonts'));
+};
+
 const watchFiles = () => {
   browserSync.init({
     server: {
@@ -131,6 +143,7 @@ const watchFiles = () => {
   watch('./src/img/*.{jpg,jpeg,png,svg}', images);
 	watch('./src/img/**/*.{jpg,jpeg,png}', images);
   watch('./src/img/svg/**.svg', svgSprites);
+  watch('./src/resources/fonts/*.ttf', fonts);
 }
 
 const cache = () => {
@@ -170,10 +183,10 @@ const toProd = (done) => {
   done();
 };
 
-exports.default = series(clean, htmlInclude, scripts, styles, resources, images, svgSprites, watchFiles);
+exports.default = series(clean, htmlInclude, scripts, styles, resources, images, svgSprites, fonts, watchFiles);
 
-exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, svgSprites, htmlMinify);
+exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, svgSprites, htmlMinify, fonts);
 
 exports.cache = series(cache, rewrite);
 
-exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, svgSprites);
+exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, svgSprites, fonts);
