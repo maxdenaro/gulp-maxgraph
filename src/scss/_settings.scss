@@ -11,7 +11,6 @@ html {
 body {
   margin: 0;
   font-family: "asd", sans-serif;
-  background-color: var(--color-white);
 }
 
 img {
@@ -22,40 +21,25 @@ a {
   text-decoration: none;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-.is-outer {
-  position: relative !important; // stylelint-disable-line declaration-no-important
-  left: -9999px !important; // stylelint-disable-line declaration-no-important
-}
-
 .site-container {
-  overflow: hidden;
+  overflow: hidden; // если используете на сайте position: sticky - уберите эту настройку
 }
 
 .is-hidden {
   display: none !important; // stylelint-disable-line declaration-no-important
 }
 
-.for-mobile {
-  display: none;
-
-  @include mobile {
-    display: block;
-  }
-}
-
-.error {
-  border: 2px #ff4019 solid !important; // stylelint-disable-line declaration-no-important
-}
-
 .btn-reset {
   border: none;
+  padding: 0;
   background: transparent;
   cursor: pointer;
+}
+
+.list-reset {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
