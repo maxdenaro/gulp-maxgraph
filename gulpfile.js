@@ -5,7 +5,7 @@ const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify-es').default;
 const del = require('del');
 const browserSync = require('browser-sync').create();
-const sass = require('gulp-sass')(require('sass'));
+const sass = require('gulp-sass');
 const svgSprite = require('gulp-svg-sprite');
 const fileInclude = require('gulp-file-include');
 const sourcemaps = require('gulp-sourcemaps');
@@ -15,7 +15,7 @@ const revDel = require('gulp-rev-delete-original');
 const htmlmin = require('gulp-htmlmin');
 const gulpif = require('gulp-if');
 const notify = require('gulp-notify');
-const image = require('gulp-image');
+const image = require('gulp-imagemin');
 const { readFileSync } = require('fs');
 const concat = require('gulp-concat');
 
