@@ -17,19 +17,17 @@
 
 <body class="page__body">
   <div class="site-container">
-    <header class="header">
-  <div class="container"></div>
-</header>
-
+    @include('partials/header.html')
+    <svg class="">
+      <use xlink:href="img/sprite.svg#icon"></use>
+    </svg>
     <picture>
       <source srcset="img/cover.avif" type="image/avif">
       <source srcset="img/cover.webp" type="image/webp">
       <img loading="lazy" src="img/cover.jpg" class="image" width="300" height="300" alt="Обложка канала MaxGraph">
     </picture>
-    <footer class="footer">
-  <div class="container"></div>
-</footer>
-
+    @include('partials/footer.html')
+    <!-- @include('html/h1.html') пример include -->
   </div>
 </body>
 
