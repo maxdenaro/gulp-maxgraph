@@ -1,3 +1,4 @@
+/* stylelint-disable */
 @mixin font-face($font-family, $url, $weight, $style) {
   @font-face {
     font-family: "#{$font-family}";
@@ -7,4 +8,3 @@
     font-style: $style;
   }
 }
-

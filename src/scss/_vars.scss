@@ -1,6 +1,10 @@
 // если вы хотите использовать sass-переменные - удалите root
 // colors
 :root {
-  --color-black: #000;
-  --color-white: #fff;
+  // base
+
+  --font-family: "Open Sans";
+  --content-width: 1170px;
+  --container-offset: 15px;
+  --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
 }

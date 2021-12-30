@@ -1,0 +1,129 @@
+{
+  "svguse": {
+    "scope": "html",
+    "prefix": "g-use",
+    "body": [
+      "<svg class=\"\">",
+      "  <use xlink:href=\"img/sprite.svg#$2\"></use>",
+      "</svg>"
+    ],
+    "description": "Snippet for use svg sprites"
+  },
+  "burger": {
+    "scope": "html",
+    "prefix": "g-burger",
+    "body": [
+      "<button class=\"burger\" aria-label=\"Открыть меню\">",
+      "  <span class=\"burger__line\"></span>",
+      "</button>"
+    ],
+    "description": "Snippet for burger btn"
+  },
+  "checkbox": {
+    "scope": "html",
+    "prefix": "g-checkbox",
+    "body": [
+      "<label class=\"custom-checkbox\">",
+      "  <input type=\"checkbox\" class=\"custom-checkbox__field\">",
+      "  <span class=\"custom-checkbox__content\">$1</span>",
+      "</label>"
+    ],
+    "description": "Snippet for custom checkbox"
+  },
+  "navigation": {
+    "scope": "html",
+    "prefix": "g-nav",
+    "body": [
+      "<nav class=\"nav\" title=\"$1\">",
+      "  <ul class=\"nav__list\">",
+      "    <li class=\"nav__item\"><a href=\"#\" class=\"nav__link\"></a></li>",
+      "    <li class=\"nav__item\"><a href=\"#\" class=\"nav__link\"></a></li>",
+      "    <li class=\"nav__item\"><a href=\"#\" class=\"nav__link\"></a></li>",
+      "  </ul>",
+      "</nav>"
+    ],
+    "description": "Snippet for navigation"
+  },
+  "social": {
+    "scope": "html",
+    "prefix": "g-social",
+    "body": [
+      "<ul class=\"social\" title=\"$1\">",
+      "  <li class=\"social__item\"><a href=\"#\" target=\"_blank\" class=\"social__link social__link--fb\" aria-label=\"Наша страничка в Фейсбуке\"></a></li>",
+      "  <li class=\"social__item\"><a href=\"#\" target=\"_blank\" class=\"social__link social__link--vk\" aria-label=\"Наша страничка во Вконтакте\"></a></li>",
+      "  <li class=\"social__item\"><a href=\"#\" target=\"_blank\" class=\"social__link social__link--tw\" aria-label=\"Наша страничка в Твиттере\"></a></li>",
+      "</ul>"
+    ],
+    "description": "Snippet for social links"
+  },
+  "basicform": {
+    "prefix": "g-form",
+    "body": [
+      "<form action=\"#\" class=\"form\">",
+      "  <input type=\"hidden\" name=\"theme\" value=\"Обратный звонок\">",
+      "  <input type=\"hidden\" name=\"admin_email[]\" value=\"$1\">",
+      "  <input type=\"hidden\" name=\"form_subject\" value=\"Заявка с сайта\">",
+      "  <label class=\"form__label\">",
+      "    <input type=\"text\" name=\"Имя\" class=\"form__input\" placeholder=\"Имя\">",
+      "  </label>",
+      "  <button class=\"btn-reset form__btn\">Отправить</button>",
+      "</form>"
+    ],
+    "description": "Snippet for basic form"
+  },
+  "basicswiper": {
+    "prefix": "g-swiper",
+    "body": [
+      "<div class=\"swiper $1\">",
+      "  <div class=\"swiper-wrapper\">",
+      "     <div class=\"swiper-slide\">",
+      "     </div>",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Snippet for basic swiper structure"
+  },
+  "logo": {
+    "prefix": "g-logo",
+    "body": [
+      "<a class=\"logo\">",
+      "  <picture>",
+      "    <source srcset=\"$1.avif\" type=\"image/avif\">",
+      "    <source srcset=\"$1.webp\" type=\"image/webp\">",
+      "    <img loading=\"lazy\" src=\"$1.$2\" class=\"image\" width=\"$4\" height=\"$5\" alt=\"$3\">",
+      "  </picture>",
+      "</a>"
+    ],
+    "description": "Snippet for basic logo structure"
+  },
+  "graph modal Btn": {
+    "prefix": "g-graph-btn",
+    "body": [
+      "<button class=\"btn-reset $1\" data-graph-path=\"$2\">$3</button>"
+    ],
+    "description": "Snippet for graph-modal btn"
+  },
+  "graph modal Structure": {
+    "prefix": "g-graph-modal",
+    "body": [
+      "<div class=\"modal\">",
+      "  <div class=\"modal__container\" role=\"dialog\" aria-modal=\"true\" data-graph-target=\"$1\">",
+      "    <button class=\"btn-reset modal__close\" aria-label=\"Закрыть модальное окно\"></button>",
+      "    <div class=\"modal-content\">$2</div>",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Snippet for graph-modal basic structure"
+  },
+  "picture": {
+    "prefix": "g-picture",
+    "body": [
+      "<picture>",
+      "  <source srcset=\"$1.avif\" type=\"image/avif\">",
+      "  <source srcset=\"$1.webp\" type=\"image/webp\">",
+      "  <img loading=\"lazy\" src=\"$1.$2\" class=\"image\" width=\"$4\" height=\"$5\" alt=\"$3\">",
+      "</picture>"
+    ],
+    "description": "Snippet for basic logo structure"
+  }
+}

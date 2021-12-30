@@ -6,3 +6,10 @@
 
 // подключения компонентов страницы
 @import "./components/header";
+
+// тестовые стили, удалите их
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

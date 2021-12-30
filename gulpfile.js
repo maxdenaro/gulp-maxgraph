@@ -18,6 +18,9 @@ const notify = require('gulp-notify');
 const image = require('gulp-imagemin');
 const { readFileSync } = require('fs');
 const concat = require('gulp-concat');
+const typograf = require('gulp-typograf');
+const webp = require('gulp-webp');
+const avif = require('gulp-avif');
 
 let isProd = false; // dev by default
 
@@ -43,7 +46,7 @@ const styles = () => {
     .pipe(gulpif(!isProd, sourcemaps.init()))
     .pipe(sass().on("error", notify.onError()))
     .pipe(autoprefixer({
-      cascade: false,
+      cascade: false
     }))
     .pipe(gulpif(isProd, cleanCSS({ level: 2 })))
     .pipe(gulpif(!isProd, sourcemaps.write('.')))
@@ -94,15 +97,35 @@ const resources = () => {
 
 const images = () => {
   return src([
-		'./src/img/**.jpg',
-		'./src/img/**.png',
-		'./src/img/**.jpeg',
+		'./src/img/**/**.jpg',
+		'./src/img/**/**.png',
+		'./src/img/**/**.jpeg',
 		'./src/img/*.svg',
-		'./src/img/**/*.jpg',
-		'./src/img/**/*.png',
-		'./src/img/**/*.jpeg'
 		])
-    .pipe(gulpif(isProd, image()))
+    .pipe(gulpif(isProd, image([
+      image.mozjpeg({quality: 80, progressive: true}),
+	    image.optipng({optimizationLevel: 2}),
+    ])))
+    .pipe(dest('./app/img'))
+};
+
+const webpImages = () => {
+  return src([
+		'./src/img/**/**.jpg',
+		'./src/img/**/**.png',
+		'./src/img/**/**.jpeg',
+		])
+    .pipe(webp())
+    .pipe(dest('./app/img'))
+};
+
+const avifImages = () => {
+  return src([
+		'./src/img/**/**.jpg',
+		'./src/img/**/**.png',
+		'./src/img/**/**.jpeg',
+		])
+    .pipe(avif())
     .pipe(dest('./app/img'))
 };
 
@@ -112,6 +135,7 @@ const htmlInclude = () => {
       prefix: '@',
       basepath: '@file'
     }))
+    .pipe(typograf({ locale: ['ru', 'en-US'] }))
     .pipe(dest('./app'))
     .pipe(browserSync.stream());
 }
@@ -128,13 +152,14 @@ const watchFiles = () => {
   watch('./src/partials/*.html', htmlInclude);
   watch('./src/*.html', htmlInclude);
   watch('./src/resources/**', resources);
-  watch('./src/img/*.{jpg,jpeg,png,svg}', images);
-	watch('./src/img/**/*.{jpg,jpeg,png}', images);
+  watch('./src/img/**/**.{jpg,jpeg,png}', images);
+	watch('./src/img/**/**.{jpg,jpeg,png}', webpImages);
+  watch('./src/img/**/**.{jpg,jpeg,png}', avifImages);
   watch('./src/img/svg/**.svg', svgSprites);
 }
 
 const cache = () => {
-  return src('app/**/*.{css,js,svg,png,jpg,jpeg,woff2}', {
+  return src('app/**/*.{css,js,svg,png,jpg,jpeg,webp,avif,woff2}', {
     base: 'app'})
     .pipe(rev())
     .pipe(revDel())
@@ -170,10 +195,10 @@ const toProd = (done) => {
   done();
 };
 
-exports.default = series(clean, htmlInclude, scripts, styles, resources, images, svgSprites, watchFiles);
+exports.default = series(clean, htmlInclude, scripts, styles, resources, images, webpImages, avifImages, svgSprites, watchFiles);
 
-exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, svgSprites, htmlMinify);
+exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, webpImages, avifImages, svgSprites, htmlMinify);
 
 exports.cache = series(cache, rewrite);
 
-exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, svgSprites);
+exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, webpImages, avifImages, svgSprites);

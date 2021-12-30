@@ -1,3 +1,5 @@
+/* stylelint-disable */
+
 @mixin bg-cover {
   background-position: center;
   background-size: cover;
@@ -28,4 +30,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+$browser-context: 16; // Default
+
+@function rem($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}rem;
 }

@@ -8,13 +8,24 @@ html {
   box-sizing: inherit;
 }
 
-body {
+.page {
+  height: 100%;
+  font-family: var(--font-family, sans-serif);
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+.page__body {
   margin: 0;
-  font-family: "asd", sans-serif;
+  min-width: 320px;
+  min-height: 100%;
+  font-size: 16px;
 }
 
 img {
+  height: auto;
   max-width: 100%;
+  object-fit: cover;
 }
 
 a {
@@ -26,7 +37,7 @@ a {
 }
 
 .is-hidden {
-  display: none !important; // stylelint-disable-line declaration-no-important
+  display: none !important; /* stylelint-disable-line declaration-no-important */
 }
 
 .btn-reset {
@@ -42,10 +53,21 @@ a {
   padding: 0;
 }
 
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  clip: rect(0 0 0 0);
+}
+
 .container {
   margin: 0 auto;
-  padding: 0 15px;
-  max-width: 1200px;
+  padding: 0 var(--container-offset);
+  max-width: var(--container-width);
 }
 
 .js-focus-visible :focus:not(.focus-visible) {
