@@ -5,7 +5,8 @@ const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify-es').default;
 const del = require('del');
 const browserSync = require('browser-sync').create();
-const sass = require('gulp-sass');
+const sass = require('sass');
+const gulpSass = require('gulp-sass');
 const svgSprite = require('gulp-svg-sprite');
 const fileInclude = require('gulp-file-include');
 const sourcemaps = require('gulp-sourcemaps');
@@ -21,16 +22,40 @@ const concat = require('gulp-concat');
 const typograf = require('gulp-typograf');
 const webp = require('gulp-webp');
 const avif = require('gulp-avif');
+const mainSass = gulpSass(sass);
+
+// paths
+const srcFolder = './src';
+const buildFolder = './app';
+const paths = {
+	srcSvg: `${srcFolder}/img/svg/**.svg`,
+	srcImgFolder: `${srcFolder}/img`,
+	buildImgFolder: `${buildFolder}/img`,
+	srcScss: `${srcFolder}/scss/**/*.scss`,
+	buildCssFolder: `${buildFolder}/css`,
+	srcVendor: `${srcFolder}/js/vendor/**.js`,
+	srcFullJs: `${srcFolder}/js/**/*.js`,
+	buildJsFolder: `${buildFolder}/js`,
+	srcPartialsFolder: `${srcFolder}/partials`,
+	resourcesFolder: `${srcFolder}/resources`,
+};
+
+const asd = () => {
+	console.log(paths.srcScssFolder)
+	return paths.srcSvgFolder;
+};
+
+asd()
 
 let isProd = false; // dev by default
 
 const clean = () => {
-	return del(['app/*'])
+	return del([`${paths.buildFolder}/*`])
 }
 
 //svg sprite
 const svgSprites = () => {
-  return src('./src/img/svg/**.svg')
+  return src(paths.srcSvg)
     .pipe(svgSprite({
       mode: {
         stack: {
@@ -38,36 +63,36 @@ const svgSprites = () => {
         }
       },
     }))
-    .pipe(dest('./app/img'));
+    .pipe(dest(paths.buildImgFolder));
 }
 
 const styles = () => {
-  return src('./src/scss/**/*.scss')
+  return src(paths.srcScss)
     .pipe(gulpif(!isProd, sourcemaps.init()))
-    .pipe(sass().on("error", notify.onError()))
+    .pipe(mainSass().on("error", notify.onError()))
     .pipe(autoprefixer({
       cascade: false
     }))
     .pipe(gulpif(isProd, cleanCSS({ level: 2 })))
     .pipe(gulpif(!isProd, sourcemaps.write('.')))
-    .pipe(dest('./app/css/'))
+    .pipe(dest(paths.buildCssFolder))
     .pipe(browserSync.stream());
 };
 
 const stylesBackend = () => {
-	return src('./src/scss/**/*.scss')
+	return src(paths.srcScss)
 		.pipe(sass().on("error", notify.onError()))
     .pipe(autoprefixer({
       cascade: false,
 		}))
-		.pipe(dest('./app/css/'))
+		.pipe(dest(paths.buildCssFolder))
 };
 
 const scripts = () => {
-	src('./src/js/vendor/**.js')
+	src(paths.srcVendor)
 		.pipe(concat('vendor.js'))
 		.pipe(gulpif(isProd, uglify().on("error", notify.onError())))
-		.pipe(dest('./app/js/'))
+		.pipe(dest(paths.buildJsFolder))
   return src(
     ['./src/js/global.js', './src/js/components/**.js', './src/js/main.js'])
     .pipe(gulpif(!isProd, sourcemaps.init()))
@@ -77,117 +102,104 @@ const scripts = () => {
     .pipe(concat('main.js'))
     .pipe(gulpif(isProd, uglify().on("error", notify.onError())))
     .pipe(gulpif(!isProd, sourcemaps.write('.')))
-    .pipe(dest('./app/js'))
+    .pipe(dest(paths.buildJsFolder))
     .pipe(browserSync.stream());
 }
 
 const scriptsBackend = () => {
-	src('./src/js/vendor/**.js')
+	src(paths.srcVendor)
     .pipe(concat('vendor.js'))
     .pipe(gulpif(isProd, uglify().on("error", notify.onError())))
-		.pipe(dest('./app/js/'))
+		.pipe(dest(paths.buildJsFolder))
 	return src(['./src/js/functions/**.js', './src/js/components/**.js', './src/js/main.js'])
-    .pipe(dest('./app/js'))
+    .pipe(dest(paths.buildJsFolder))
 };
 
 const resources = () => {
-  return src('./src/resources/**')
-    .pipe(dest('./app'))
+  return src(`${paths.sresourcesFolder}/**`)
+    .pipe(dest(buildFolder))
 }
 
 const images = () => {
-  return src([
-		'./src/img/**/**.jpg',
-		'./src/img/**/**.png',
-		'./src/img/**/**.jpeg',
-		'./src/img/*.svg',
-		])
+  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`])
     .pipe(gulpif(isProd, image([
       image.mozjpeg({quality: 80, progressive: true}),
 	    image.optipng({optimizationLevel: 2}),
     ])))
-    .pipe(dest('./app/img'))
+    .pipe(dest(paths.buildImgFolder))
 };
 
 const webpImages = () => {
-  return src([
-		'./src/img/**/**.jpg',
-		'./src/img/**/**.png',
-		'./src/img/**/**.jpeg',
-		])
+  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`])
     .pipe(webp())
-    .pipe(dest('./app/img'))
+    .pipe(dest(paths.buildImgFolder))
 };
 
 const avifImages = () => {
-  return src([
-		'./src/img/**/**.jpg',
-		'./src/img/**/**.png',
-		'./src/img/**/**.jpeg',
-		])
+  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`])
     .pipe(avif())
-    .pipe(dest('./app/img'))
+    .pipe(dest(paths.buildImgFolder))
 };
 
 const htmlInclude = () => {
-  return src(['./src/*.html'])
+  return src([`${srcFolder}/*.html`])
     .pipe(fileInclude({
       prefix: '@',
       basepath: '@file'
     }))
     .pipe(typograf({ locale: ['ru', 'en-US'] }))
-    .pipe(dest('./app'))
+    .pipe(dest(srcFolder))
     .pipe(browserSync.stream());
 }
 
 const watchFiles = () => {
   browserSync.init({
     server: {
-      baseDir: "./app"
+      baseDir: `${buildFolder}`
     },
   });
 
-  watch('./src/scss/**/*.scss', styles);
-  watch('./src/js/**/*.js', scripts);
-  watch('./src/partials/*.html', htmlInclude);
-  watch('./src/*.html', htmlInclude);
-  watch('./src/resources/**', resources);
-  watch('./src/img/**/**.{jpg,jpeg,png}', images);
-	watch('./src/img/**/**.{jpg,jpeg,png}', webpImages);
-  watch('./src/img/**/**.{jpg,jpeg,png}', avifImages);
-  watch('./src/img/svg/**.svg', svgSprites);
+  watch(paths.srcScss, styles);
+  watch(paths.srcFullJs, scripts);
+  watch(`${paths.srcPartialsFolder}/*.html`, htmlInclude);
+  watch(`${srcFolder}/*.html`, htmlInclude);
+  watch(`${paths.sresourcesFolder}/**`, resources);
+  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, images);
+	watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, webpImages);
+  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, avifImages);
+  watch(paths.srcSvg, svgSprites);
 }
 
 const cache = () => {
-  return src('app/**/*.{css,js,svg,png,jpg,jpeg,webp,avif,woff2}', {
-    base: 'app'})
+  return src(`${buildFolder}/**/*.{css,js,svg,png,jpg,jpeg,webp,avif,woff2}`, {
+    base: buildFolder})
     .pipe(rev())
     .pipe(revDel())
-		.pipe(dest('app'))
+		.pipe(dest(buildFolder))
     .pipe(rev.manifest('rev.json'))
-    .pipe(dest('app'));
+    .pipe(dest(buildFolder));
 };
 
 const rewrite = () => {
   const manifest = readFileSync('app/rev.json');
-	src('app/css/*.css')
+	src(`${paths.buildCssFolder}/*.css`)
 		.pipe(revRewrite({
       manifest
     }))
-		.pipe(dest('app/css'));
-  return src('app/**/*.html')
+		.pipe(dest(buildCssFolder));
+  return src(`${buildFolder}/**/*.html`)
     .pipe(revRewrite({
       manifest
     }))
-    .pipe(dest('app'));
+    .pipe(dest(buildFolder));
 }
 
 const htmlMinify = () => {
-	return src('app/**/*.html')
+	return src(`${buildFolder}/**/*.html`)
 		.pipe(htmlmin({
 			collapseWhitespace: true
 		}))
-		.pipe(dest('app'));
+		.pipe(dest(buildFolder));
 }
 
 const toProd = (done) => {

@@ -39,7 +39,7 @@
     "gulp-rev": "^9.0.0",
     "gulp-rev-delete-original": "^0.2.3",
     "gulp-rev-rewrite": "^4.0.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-svg-sprite": "^1.5.0",
     "gulp-typograf": "^4.0.3",
@@ -48,6 +48,7 @@
     "node-w3c-validator": "^2.0.1",
     "postcss": "^8.4.5",
     "postcss-scss": "^4.0.2",
+    "sass": "^1.45.1",
     "stylelint": "^14.2.0",
     "stylelint-config-standard-scss": "^3.0.0",
     "stylelint-order": "^5.0.0"
