@@ -53,7 +53,7 @@ const paths = {
 let isProd = false; // dev by default
 
 const clean = () => {
-  return del([`${paths.buildFolder}/*`])
+  return del([`${buildFolder}/*`])
 }
 
 //svg sprite
@@ -141,7 +141,7 @@ const scriptsBackend = () => {
 };
 
 const resources = () => {
-  return src(`${paths.sresourcesFolder}/**`)
+  return src(`${paths.resourcesFolder}/**`)
     .pipe(dest(buildFolder))
 }
 
