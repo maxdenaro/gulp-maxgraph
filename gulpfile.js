@@ -5,9 +5,7 @@ const {
   watch
 } = require('gulp');
 const autoprefixer = require('gulp-autoprefixer');
-const babel = require('gulp-babel');
 const cleanCSS = require('gulp-clean-css');
-const uglify = require('gulp-uglify-es').default;
 const del = require('del');
 const browserSync = require('browser-sync').create();
 const sass = require('sass');
@@ -17,7 +15,6 @@ const svgmin = require('gulp-svgmin');
 const cheerio = require('gulp-cheerio');
 const replace = require('gulp-replace');
 const fileInclude = require('gulp-file-include');
-const sourcemaps = require('gulp-sourcemaps');
 const rev = require('gulp-rev');
 const revRewrite = require('gulp-rev-rewrite');
 const revDel = require('gulp-rev-delete-original');
@@ -28,11 +25,12 @@ const image = require('gulp-imagemin');
 const {
   readFileSync
 } = require('fs');
-const concat = require('gulp-concat');
 const typograf = require('gulp-typograf');
 const webp = require('gulp-webp');
 const avif = require('gulp-avif');
 const mainSass = gulpSass(sass);
+const webpackStream = require('webpack-stream');
+const plumber = require('gulp-plumber');
 
 // paths
 const srcFolder = './src';
@@ -43,8 +41,8 @@ const paths = {
   buildImgFolder: `${buildFolder}/img`,
   srcScss: `${srcFolder}/scss/**/*.scss`,
   buildCssFolder: `${buildFolder}/css`,
-  srcVendor: `${srcFolder}/js/vendor/**.js`,
   srcFullJs: `${srcFolder}/js/**/*.js`,
+  srcMainJs: `${srcFolder}/js/main.js`,
   buildJsFolder: `${buildFolder}/js`,
   srcPartialsFolder: `${srcFolder}/partials`,
   resourcesFolder: `${srcFolder}/resources`,
@@ -53,7 +51,7 @@ const paths = {
 let isProd = false; // dev by default
 
 const clean = () => {
-  return del([`${buildFolder}/*`])
+  return del([buildFolder])
 }
 
 //svg sprite
@@ -82,63 +80,74 @@ const svgSprites = () => {
     .pipe(svgSprite({
       mode: {
         stack: {
-          sprite: "../sprite.svg" //sprite file name
+          sprite: "../sprite.svg"
         }
       },
     }))
     .pipe(dest(paths.buildImgFolder));
 }
 
+// scss styles
 const styles = () => {
-  return src(paths.srcScss)
-    .pipe(gulpif(!isProd, sourcemaps.init()))
-    .pipe(mainSass().on("error", notify.onError()))
-    .pipe(autoprefixer({
-      cascade: false
-    }))
+  return src(paths.srcScss, { sourcemaps: !isProd })
+    .pipe(plumber(
+      notify.onError({
+        title: "SCSS",
+        message: "Error: <%= error.message %>"
+      })
+    ))
+    .pipe(mainSass())
+    // .pipe(autoprefixer({
+    //   cascade: false,
+    //   grid: true,
+    //   overrideBrowserslist: ["last 5 versions"]
+    // }))
     .pipe(gulpif(isProd, cleanCSS({
       level: 2
     })))
-    .pipe(gulpif(!isProd, sourcemaps.write('.')))
-    .pipe(dest(paths.buildCssFolder))
+    .pipe(dest(paths.buildCssFolder, { sourcemaps: '.' }))
     .pipe(browserSync.stream());
 };
 
-const stylesBackend = () => {
-  return src(paths.srcScss)
-    .pipe(sass().on("error", notify.onError()))
-    .pipe(autoprefixer({
-      cascade: false,
-    }))
-    .pipe(dest(paths.buildCssFolder))
-};
-
+// scripts
 const scripts = () => {
-  src(paths.srcVendor)
-    .pipe(concat('vendor.js'))
-    .pipe(gulpif(isProd, uglify().on("error", notify.onError())))
-    .pipe(dest(paths.buildJsFolder))
-  return src(
-      ['./src/js/global.js', './src/js/components/**.js', './src/js/main.js'])
-    .pipe(gulpif(!isProd, sourcemaps.init()))
-    .pipe(babel({
-      presets: ['@babel/env']
+  return src(paths.srcMainJs)
+    .pipe(plumber(
+      notify.onError({
+        title: "JS",
+        message: "Error: <%= error.message %>"
+      })
+    ))
+    .pipe(webpackStream({
+      mode: isProd ? 'production' : 'development',
+      output: {
+        filename: 'main.js',
+      },
+      module: {
+        rules: [{
+          test: /\.m?js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['@babel/preset-env', {
+                  targets: "defaults"
+                }]
+              ]
+            }
+          }
+        }]
+      },
+      devtool: !isProd ? 'source-map' : false
     }))
-    .pipe(concat('main.js'))
-    .pipe(gulpif(isProd, uglify().on("error", notify.onError())))
-    .pipe(gulpif(!isProd, sourcemaps.write('.')))
+    .on('error', function (err) {
+      console.error('WEBPACK ERROR', err);
+      this.emit('end');
+    })
     .pipe(dest(paths.buildJsFolder))
     .pipe(browserSync.stream());
 }
-
-const scriptsBackend = () => {
-  src(paths.srcVendor)
-    .pipe(concat('vendor.js'))
-    .pipe(gulpif(isProd, uglify().on("error", notify.onError())))
-    .pipe(dest(paths.buildJsFolder))
-  return src(['./src/js/functions/**.js', './src/js/components/**.js', './src/js/main.js'])
-    .pipe(dest(paths.buildJsFolder))
-};
 
 const resources = () => {
   return src(`${paths.resourcesFolder}/**`)
@@ -245,5 +254,3 @@ exports.default = series(clean, htmlInclude, scripts, styles, resources, images,
 exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, webpImages, avifImages, svgSprites, htmlMinify);
 
 exports.cache = series(cache, rewrite);
-
-exports.backend = series(toProd, clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, webpImages, avifImages, svgSprites);

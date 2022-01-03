@@ -1,6 +1,6 @@
 {
   "name": "gulp-builder",
-  "version": "1.0.0",
+  "version": "2.0.4",
   "description": "gulp-builder for weblayout",
   "main": "gulpfile.js",
   "scripts": {
@@ -8,45 +8,37 @@
     "dev": "gulp",
     "build": "gulp build",
     "cache": "gulp cache",
-    "backend": "gulp backend",
     "code": "editorconfig-checker"
   },
-  "browserslist": [
-    "> 1%",
-    "not IE 11"
-  ],
   "author": "MaxGraph",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "babel-loader": "^8.2.2",
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "babel-loader": "^8.2.3",
     "browser-sync": "^2.26.14",
     "del": "^6.0.0",
     "editorconfig-checker": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-avif": "^1.0.1",
-    "gulp-babel": "^8.0.0",
     "gulp-cheerio": "^1.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-cli": "^2.3.0",
-    "gulp-concat": "^2.6.1",
     "gulp-file-include": "^2.3.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
     "gulp-imagemin": "^7.1.0",
     "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
     "gulp-replace": "^1.1.3",
     "gulp-rev": "^9.0.0",
     "gulp-rev-delete-original": "^0.2.3",
     "gulp-rev-rewrite": "^4.0.0",
     "gulp-sass": "^5.0.0",
-    "gulp-sourcemaps": "^3.0.0",
     "gulp-svg-sprite": "^1.5.0",
     "gulp-svgmin": "^4.1.0",
     "gulp-typograf": "^4.0.3",
-    "gulp-uglify-es": "^2.0.0",
     "gulp-webp": "^4.0.1",
     "node-w3c-validator": "^2.0.1",
     "postcss": "^8.4.5",
@@ -54,6 +46,8 @@
     "sass": "^1.45.1",
     "stylelint": "^14.2.0",
     "stylelint-config-standard-scss": "^3.0.0",
-    "stylelint-order": "^5.0.0"
+    "stylelint-order": "^5.0.0",
+    "webpack": "^5.65.0",
+    "webpack-stream": "^7.0.0"
   }
 }
