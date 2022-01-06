@@ -97,11 +97,11 @@ const styles = () => {
       })
     ))
     .pipe(mainSass())
-    // .pipe(autoprefixer({
-    //   cascade: false,
-    //   grid: true,
-    //   overrideBrowserslist: ["last 5 versions"]
-    // }))
+    .pipe(autoprefixer({
+      cascade: false,
+      grid: true,
+      overrideBrowserslist: ["last 5 versions"]
+    }))
     .pipe(gulpif(isProd, cleanCSS({
       level: 2
     })))
@@ -155,7 +155,7 @@ const resources = () => {
 }
 
 const images = () => {
-  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`])
+  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png,svg}`])
     .pipe(gulpif(isProd, image([
       image.mozjpeg({
         quality: 80,
@@ -204,8 +204,8 @@ const watchFiles = () => {
   watch(paths.srcFullJs, scripts);
   watch(`${paths.srcPartialsFolder}/*.html`, htmlInclude);
   watch(`${srcFolder}/*.html`, htmlInclude);
-  watch(`${paths.sresourcesFolder}/**`, resources);
-  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, images);
+  watch(`${paths.resourcesFolder}/**`, resources);
+  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png,svg}`, images);
   watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, webpImages);
   watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, avifImages);
   watch(paths.srcSvg, svgSprites);
