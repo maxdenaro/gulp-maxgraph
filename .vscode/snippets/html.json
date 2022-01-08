@@ -13,7 +13,7 @@
     "scope": "html",
     "prefix": "g-burger",
     "body": [
-      "<button class=\"burger\" aria-label=\"Открыть меню\">",
+      "<button class=\"burger\" aria-label=\"Открыть меню\" data-burger>",
       "  <span class=\"burger__line\"></span>",
       "</button>"
     ],
