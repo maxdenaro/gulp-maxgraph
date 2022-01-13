@@ -31,6 +31,9 @@ const avif = require('gulp-avif');
 const mainSass = gulpSass(sass);
 const webpackStream = require('webpack-stream');
 const plumber = require('gulp-plumber');
+const path = require('path');
+const zip = require('gulp-zip');
+const rootFolder = path.basename(path.resolve());
 
 // paths
 const srcFolder = './src';
@@ -109,6 +112,25 @@ const styles = () => {
     .pipe(browserSync.stream());
 };
 
+// styles backend
+const stylesBackend = () => {
+  return src(paths.srcScss)
+    .pipe(plumber(
+      notify.onError({
+        title: "SCSS",
+        message: "Error: <%= error.message %>"
+      })
+    ))
+    .pipe(mainSass())
+    .pipe(autoprefixer({
+      cascade: false,
+      grid: true,
+      overrideBrowserslist: ["last 5 versions"]
+    }))
+    .pipe(dest(paths.buildCssFolder))
+    .pipe(browserSync.stream());
+};
+
 // scripts
 const scripts = () => {
   return src(paths.srcMainJs)
@@ -140,6 +162,46 @@ const scripts = () => {
         }]
       },
       devtool: !isProd ? 'source-map' : false
+    }))
+    .on('error', function (err) {
+      console.error('WEBPACK ERROR', err);
+      this.emit('end');
+    })
+    .pipe(dest(paths.buildJsFolder))
+    .pipe(browserSync.stream());
+}
+
+// scripts backend
+const scriptsBackend = () => {
+  return src(paths.srcMainJs)
+    .pipe(plumber(
+      notify.onError({
+        title: "JS",
+        message: "Error: <%= error.message %>"
+      })
+    ))
+    .pipe(webpackStream({
+      mode: 'development',
+      output: {
+        filename: 'main.js',
+      },
+      module: {
+        rules: [{
+          test: /\.m?js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['@babel/preset-env', {
+                  targets: "defaults"
+                }]
+              ]
+            }
+          }
+        }]
+      },
+      devtool: false
     }))
     .on('error', function (err) {
       console.error('WEBPACK ERROR', err);
@@ -228,7 +290,7 @@ const rewrite = () => {
     .pipe(revRewrite({
       manifest
     }))
-    .pipe(dest(buildCssFolder));
+    .pipe(dest(paths.buildCssFolder));
   return src(`${buildFolder}/**/*.html`)
     .pipe(revRewrite({
       manifest
@@ -244,6 +306,19 @@ const htmlMinify = () => {
     .pipe(dest(buildFolder));
 }
 
+const zipFiles = () => {
+  del(`${rootFolder}/*.zip`);
+  return src(`${buildFolder}/**/*.*`)
+    .pipe(plumber(
+      notify.onError({
+        title: "ZIP",
+        message: "Error: <%= error.message %>"
+      })
+    ))
+    .pipe(zip(`${rootFolder}.zip`))
+    .pipe(dest(buildFolder));
+}
+
 const toProd = (done) => {
   isProd = true;
   done();
@@ -251,6 +326,10 @@ const toProd = (done) => {
 
 exports.default = series(clean, htmlInclude, scripts, styles, resources, images, webpImages, avifImages, svgSprites, watchFiles);
 
+exports.backend = series(clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, webpImages, avifImages, svgSprites)
+
 exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, webpImages, avifImages, svgSprites, htmlMinify);
 
 exports.cache = series(cache, rewrite);
+
+exports.zip = zipFiles;

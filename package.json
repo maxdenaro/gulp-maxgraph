@@ -8,6 +8,8 @@
     "dev": "gulp",
     "build": "gulp build",
     "cache": "gulp cache",
+    "backend": "gulp backend",
+    "zip": "gulp zip",
     "code": "editorconfig-checker"
   },
   "author": "MaxGraph",
@@ -40,6 +42,7 @@
     "gulp-svgmin": "^4.1.0",
     "gulp-typograf": "^4.0.3",
     "gulp-webp": "^4.0.1",
+    "gulp-zip": "^5.1.0",
     "node-w3c-validator": "^2.0.1",
     "postcss": "^8.4.5",
     "postcss-scss": "^4.0.2",
@@ -49,5 +52,8 @@
     "stylelint-order": "^5.0.0",
     "webpack": "^5.65.0",
     "webpack-stream": "^7.0.0"
+  },
+  "dependencies": {
+    "graph-modal": "^1.0.3"
   }
 }
