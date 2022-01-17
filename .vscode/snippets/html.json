@@ -125,5 +125,23 @@
       "</picture>"
     ],
     "description": "Snippet for basic logo structure"
+  },
+  "tabs html sctructure": {
+    "prefix": "g-tabs",
+    "body": [
+      "<div class=\"tabs\" data-tabs=\"$1\">",
+      "  <ul class=\"tabs__nav\">",
+      "    <li class=\"tabs__nav-item\"><button class=\"tabs__nav-btn\" type=\"button\">$2</button></li>",
+      "    <li class=\"tabs__nav-item\"><button class=\"tabs__nav-btn\" type=\"button\">$3</button></li>",
+      "    <li class=\"tabs__nav-item\"><button class=\"tabs__nav-btn\" type=\"button\">$4</button></li>",
+      "  </ul>",
+      "  <div class=\"tabs__content\">",
+      "    <div class=\"tabs__panel\">$5</div>",
+      "    <div class=\"tabs__panel\">$6</div>",
+      "    <div class=\"tabs__panel\">$7</div>",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Snippet for basic tabs structure"
   }
 }
