@@ -1,0 +1,47 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base",
+    "prettier"
+  ],
+  "plugins": [
+    "import"
+  ],
+  "globals": {
+    "app": "readonly"
+  },
+  "rules": {
+    "no-console": 0,
+    "semi": ["error", "always"],
+    "func-names": ["warn", "never"],
+    "no-unexpected-multiline": "error",
+    "object-curly-spacing": ["error", "always", { "arraysInObjects": false }],
+    "import/no-extraneous-dependencies" : ["error", { "devDependencies": true }],
+    "max-len": [
+      "warn",
+      {
+        "code": 100,
+        "ignoreComments": true,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false, "argsIgnorePattern": "^_" }
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ]
+  }
+}

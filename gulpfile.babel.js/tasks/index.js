@@ -1,0 +1,11 @@
+export { default as clean } from './clean';
+export { default as resources } from './resources';
+export { default as cacheTask } from './cache-task';
+export { default as svgSprites } from './svg-sprites';
+export { default as stylesBackend } from './styles-backend';
+export { default as scriptsBackend } from './scripts-backend';
+export { default as htmlInclude } from './html-include';
+export { default as rewrite } from './rewrite';
+export { default as scripts } from './scripts';
+export { default as styles } from './styles';
+export { default as zip } from './zip';
