@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "graph-modal": "^1.0.3",
-    "graph-tabs": "^1.0.0"
+    "graph-tabs": "^1.0.0",
+    "simplebar": "^5.3.6"
   }
 }
