@@ -5,7 +5,7 @@ export const disableScroll = () => {
   const pagePosition = window.scrollY;
   const paddingOffset = `${(window.innerWidth - vars.bodyEl.offsetWidth)}px`;
 
-  vars.htmlEl.style.scrollBehavior = 'auto';
+  vars.htmlEl.style.scrollBehavior = 'none';
   fixBlocks.forEach(el => { el.style.paddingRight = paddingOffset; });
   vars.bodyEl.style.paddingRight = paddingOffset;
   vars.bodyEl.classList.add('dis-scroll');
