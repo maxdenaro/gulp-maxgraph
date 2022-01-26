@@ -60,11 +60,8 @@
     "prefix": "g-form",
     "body": [
       "<form action=\"#\" class=\"form\">",
-      "  <input type=\"hidden\" name=\"theme\" value=\"Обратный звонок\">",
-      "  <input type=\"hidden\" name=\"admin_email[]\" value=\"$1\">",
-      "  <input type=\"hidden\" name=\"form_subject\" value=\"Заявка с сайта\">",
       "  <label class=\"form__label\">",
-      "    <input type=\"text\" name=\"Имя\" class=\"form__input\" placeholder=\"Имя\">",
+      "    <input type=\"text\" name=\"Имя\" class=\"input-reset form__input\" placeholder=\"Имя\">",
       "  </label>",
       "  <button class=\"btn-reset form__btn\">Отправить</button>",
       "</form>"
@@ -83,19 +80,6 @@
     ],
     "description": "Snippet for basic swiper structure"
   },
-  "logo": {
-    "prefix": "g-logo",
-    "body": [
-      "<a class=\"logo\">",
-      "  <picture>",
-      "    <source srcset=\"$1.avif\" type=\"image/avif\">",
-      "    <source srcset=\"$1.webp\" type=\"image/webp\">",
-      "    <img loading=\"lazy\" src=\"$1.$2\" class=\"image\" width=\"$4\" height=\"$5\" alt=\"$3\">",
-      "  </picture>",
-      "</a>"
-    ],
-    "description": "Snippet for basic logo structure"
-  },
   "graph modal Btn": {
     "prefix": "g-graph-btn",
     "body": [
@@ -106,10 +90,10 @@
   "graph modal Structure": {
     "prefix": "g-graph-modal",
     "body": [
-      "<div class=\"modal\">",
-      "  <div class=\"modal__container\" role=\"dialog\" aria-modal=\"true\" data-graph-target=\"$1\">",
-      "    <button class=\"btn-reset modal__close\" aria-label=\"Закрыть модальное окно\"></button>",
-      "    <div class=\"modal-content\">$2</div>",
+      "<div class=\"graph-modal\">",
+      "  <div class=\"graph-modal__container\" role=\"dialog\" aria-modal=\"true\" data-graph-target=\"$1\">",
+      "    <button class=\"btn-reset graph-modal__close\" aria-label=\"Закрыть модальное окно\"></button>",
+      "    <div class=\"graph-modal__content\">$2</div>",
       "  </div>",
       "</div>"
     ],
@@ -125,6 +109,27 @@
       "</picture>"
     ],
     "description": "Snippet for basic logo structure"
+  },
+  "svgimg": {
+    "scope": "html",
+    "prefix": "g-svgimg",
+    "body": [
+      "<img loading=\"lazy\" src=\"$1.$2\" class=\"image\" width=\"$4\" height=\"$5\" alt=\"$3\">"
+    ],
+    "description": "Snippet for simple html svg images"
+  },
+  "tooltip": {
+  "prefix": "g-tooltip",
+    "body": [
+      "<span class=\"tooltip\">",
+      "  <button class=\"tooltip__btn\" aria-describedby=\"$1\">$2</button>",
+      "  <span class=\"tooltip__txt\" role=\"tooltip\" id=\"$1\">",
+      "    <span class=\"visually-hidden\">Тултип: </span>",
+      "    $3",
+      "  </span>",
+      "</span>"
+    ],
+    "description": "Snippet for tooltip"
   },
   "tabs html sctructure": {
     "prefix": "g-tabs",
