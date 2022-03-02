@@ -55,3 +55,32 @@ $browser-context: 16; // Default
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
 }
+
+@mixin mr($value) {
+    &:not(:last-child) {
+        margin-right: $value;
+    }
+}
+
+@mixin ml($value) {
+    &:not(:last-child) {
+        margin-left: $value;
+    }
+}
+
+@mixin mb($value) {
+    &:not(:last-child) {
+        margin-bottom: $value;
+    }
+}
+
+@mixin mt($value) {
+    &:not(:last-child) {
+        margin-top: $value;
+    }
+}
+
+@mixin pseudo() {
+    content: "";
+    display: block;
+}
