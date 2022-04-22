@@ -92,7 +92,7 @@
     "body": [
       "<div class=\"graph-modal\">",
       "  <div class=\"graph-modal__container\" role=\"dialog\" aria-modal=\"true\" data-graph-target=\"$1\">",
-      "    <button class=\"btn-reset graph-modal__close\" aria-label=\"Закрыть модальное окно\"></button>",
+      "    <button class=\"btn-reset js-modal-close graph-modal__close\" aria-label=\"Закрыть модальное окно\"></button>",
       "    <div class=\"graph-modal__content\">$2</div>",
       "  </div>",
       "</div>"
