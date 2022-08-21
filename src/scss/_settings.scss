@@ -18,7 +18,7 @@ html {
   margin: 0;
   min-width: calc(#{$minWidth} * 1px);
   min-height: 100%;
-  font-size: $fontSize;
+  font-size: rem($fontSize);
 }
 
 img {
