@@ -1,3 +1,4 @@
+@use "sass:math";
 // базовые подключения
 @import "vars";
 @import "mixins";
@@ -12,5 +13,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--vh);
+  height: 100vh;
 }

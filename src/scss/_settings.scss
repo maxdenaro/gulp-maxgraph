@@ -10,15 +10,15 @@ html {
 
 .page {
   height: 100%;
-  font-family: var(--font-family, sans-serif);
+  font-family: $fontFamily;
   -webkit-text-size-adjust: 100%;
 }
 
 .page__body {
   margin: 0;
-  min-width: 320px;
+  min-width: calc(#{$minWidth} * 1px);
   min-height: 100%;
-  font-size: 16px;
+  font-size: $fontSize;
 }
 
 img {
@@ -80,8 +80,8 @@ a {
 
 .container {
   margin: 0 auto;
-  padding: 0 var(--container-offset);
-  max-width: var(--container-width);
+  padding: 0 calc(#{$containerPadding} / 2 * 1px);
+  max-width: calc($containerWidth * 1px);
 }
 
 .js-focus-visible :focus:not(.focus-visible) {

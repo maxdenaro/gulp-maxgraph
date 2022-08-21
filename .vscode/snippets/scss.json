@@ -1,0 +1,9 @@
+{
+    "Adaptiv Value": {
+        "prefix": "g-av",
+        "body": [
+            "@include adaptiveValue(\"${1:font-size}\", $2, $3);"
+        ],
+        "description": "Адаптивное свойство (clamp): CSS-свойство, начальное значение, конечное значение, ширина начальная, ширина конечная"
+    }
+}

@@ -1,12 +1,28 @@
-// если вы хотите использовать sass-переменные - удалите root
-// colors
-:root {
-  // base
-  --font-family: "Open Sans", sans-serif;
-  --content-width: 1170px;
-  --container-offset: 15px;
-  --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+//Шрифты
+$fontFamily: "Montserrat", sans-serif;
+$fontSize: rem(16);
 
-  // colors
-  --light-color: #fff;
-}
+//Переменные для adaptiveValue
+$minWidth: 320;
+$maxWidth: 1920;
+
+//Container
+$maxWidthContainer: 1110;
+$containerPadding: 30;
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+// colors
+$colorLight: #fff;
+
+//Раскоментируйте если хотите использовать root переменные
+// colors
+// :root {
+//   // base
+//   --font-family: "Open Sans", sans-serif;
+//   --content-width: 1170px;
+//   --container-offset: 15px;
+//   --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+
+//   // colors
+//   --light-color: #fff;
+// }
