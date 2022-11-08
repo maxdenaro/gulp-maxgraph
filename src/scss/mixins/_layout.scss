@@ -1,0 +1,43 @@
+/* stylelint-disable value-keyword-case */
+@use "sass:map";
+
+@mixin flex-layout($options) {
+
+  .#{map-get($options, parentClass)} {
+    --gap: #{map.get($options, desktopGap)};
+    --elems: #{map.get($options, desktopElems)};
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+  }
+
+  .#{map.get($options, itemsClass)} {
+    width: calc((100% - ((var(--elems) - 1) * var(--gap))) / (var(--elems)));
+
+    @media (max-width: map-get($options, tablet)) {
+      --gap: #{map.get($options, tabletGap)};
+      --elems: #{map.get($options, tabletElems)};
+    }
+
+    @media (max-width: map-get($options, mobile)) {
+      --gap: #{map.get($options, mobileGap)};
+      --elems: #{map.get($options, mobileElems)};
+    }
+  }
+}
+
+// $options: (
+//   parentClass: "cards",
+//   itemsClass: "cards__item",
+//   desktopGap: 30px,
+//   desktopElems: 3,
+//   tablet: "1024px",
+//   tabletElems: 2,
+//   tabletGap:  30px,
+//   mobile: "600px",
+//   mobileElems: 1,
+//   mobileGap: 20px
+// );
+
+// @include flex-layout($options);
