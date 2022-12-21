@@ -1,4 +1,10 @@
 @mixin tabs {
+  .tabs__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
   .tabs__nav-btn--active {
     background-color: #ff0001;
   }
