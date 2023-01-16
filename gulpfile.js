@@ -16,7 +16,6 @@ const revDel = require("gulp-rev-delete-original");
 const htmlmin = require("gulp-htmlmin");
 const gulpif = require("gulp-if");
 const notify = require("gulp-notify");
-const newer = require("gulp-newer");
 const image = require("gulp-imagemin");
 const { readFileSync } = require("fs");
 // const typograf = require('gulp-typograf');
@@ -281,7 +280,6 @@ const webpImages = () => {
 
 const avifImages = () => {
   return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`])
-    .pipe(newer(paths.buildImgFolder))
     .pipe(avif())
     .pipe(dest(paths.buildImgFolder));
 };
@@ -317,7 +315,6 @@ const watchFiles = () => {
   watch(`${paths.resourcesFolder}/**`, resources);
   watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png,svg}`, images);
   watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, webpImages);
-  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, avifImages);
   watch(paths.srcSvg, svgSprites);
 };
 

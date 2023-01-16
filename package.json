@@ -1,6 +1,6 @@
 {
   "name": "gulp-builder",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "gulp-builder for weblayout",
   "main": "gulpfile.js",
   "scripts": {
@@ -23,7 +23,6 @@
     "editorconfig-checker": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
-    "gulp-avif": "^1.0.1",
     "gulp-cheerio": "^1.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-cli": "^2.3.0",
