@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'ubuntu_monobold_italic';
+  src: url('ubuntumono-bolditalic-webfont.woff2') format('woff2'),
+    url('ubuntumono-bolditalic-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+.header {
+  width: 100%;
+  display: grid;
+  visibility: initial;
+  grid-area: header;
+  grid-template-columns: 160px 1fr 2fr;
+  align-items: baseline;
+  position: fixed;
+  z-index: 500;
+  background-color: rgba(117, 117, 245, 0.14);
+  box-shadow: inset -2px -4px 5px 2px rgba(0, 0, 0, 0.8),
+    inset -1px -1px 40px 1px rgba(255, 255, 255, 0.5),
+    4px 5px 20px rgba(0, 0, 0, 0.322);
+}
+
+.header_logo {
+  position: relative;
+  padding: 40px;
+  color: rgba(196, 6, 6, 0.67);
+  font-family: "Muller";
+  border: 2px solid rgba(10, 9, 9, 0.83);
+  border-radius: 50%;
+
+  font-size: 48px;
+  text-shadow: -2px 1px 4px 10px rgba(252, 233, 6, 0.6);
+  box-shadow: inset 3px 8px 20px rgba(255, 255, 255, 0.8),
+    4px 5px 2px 1px rgba(45, 29, 2, 0.8), 2px 2px 2px rgba(66, 43, 5, 0.8);
+}
+
+.nik {
+  grid-row-start: 1;
+  grid-column: 2/3;
+  font-family: 'ubuntu_monobold_italic';
+  font-weight: 900;
+}
+
+.header_menu {
+  font-family: "Muller" sans-serif;
+  height: 60px;
+  display: grid;
+  grid-column: 3 / 4;
+  grid-row: 1;
+}
+
+.header_list {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.header_link {
+  justify-content: space-around;
+  align-content: center;
+}
+
+@media (max-width: 676px) {
+  .header_menu {
+    display: grid;
+    grid-auto-flow: row;
+  }
+
+  .header_logo {
+    font-size: 38px;
+  }
+}
+
+.logo {
+  width: 150px;
+  height: 65px;
+  fill: bisque;
+}

@@ -1,1 +1,3 @@
-// @include font-face("Muller", "../fonts/MullerRegular", 400, normal);
+ @include font-face("Muller", "../fonts/MullerRegular", 400, normal);
+ @include font-face('ubuntu_monobold_italic', "../fonts/ubuntumono-bolditalic-webfont.woff2", normal, normal);
+ @include font-face('ubuntu_monobold_italic', "../fonts/ubuntumono-bolditalic-webfont.woff", normal, normal);
