@@ -13,7 +13,7 @@
     "scope": "html",
     "prefix": "g-burger",
     "body": [
-      "<button class=\"burger\" aria-label=\"Открыть меню\" aria-expanded=\"false\"  data-burger>",
+      "<button class=\"btn-reset burger\" aria-label=\"Открыть меню\" aria-expanded=\"false\" data-burger>",
       "  <span class=\"burger__line\"></span>",
       "</button>"
     ],
@@ -35,7 +35,7 @@
     "prefix": "g-nav",
     "body": [
       "<nav class=\"nav\" title=\"$1\">",
-      "  <ul class=\"nav__list\">",
+      "  <ul class=\"list-reset nav__list\">",
       "    <li class=\"nav__item\"><a href=\"#\" class=\"nav__link\"></a></li>",
       "    <li class=\"nav__item\"><a href=\"#\" class=\"nav__link\"></a></li>",
       "    <li class=\"nav__item\"><a href=\"#\" class=\"nav__link\"></a></li>",
@@ -48,7 +48,7 @@
     "scope": "html",
     "prefix": "g-social",
     "body": [
-      "<ul class=\"social\" title=\"$1\">",
+      "<ul class=\"list-reset social\" title=\"$1\">",
       "  <li class=\"social__item\"><a href=\"#\" target=\"_blank\" class=\"social__link social__link--fb\" aria-label=\"Наша страничка в Фейсбуке\"></a></li>",
       "  <li class=\"social__item\"><a href=\"#\" target=\"_blank\" class=\"social__link social__link--vk\" aria-label=\"Наша страничка во Вконтакте\"></a></li>",
       "  <li class=\"social__item\"><a href=\"#\" target=\"_blank\" class=\"social__link social__link--tw\" aria-label=\"Наша страничка в Твиттере\"></a></li>",
@@ -73,8 +73,8 @@
     "body": [
       "<div class=\"swiper $1\">",
       "  <div class=\"swiper-wrapper\">",
-      "     <div class=\"swiper-slide\">",
-      "     </div>",
+      "    <div class=\"swiper-slide\">",
+      "    </div>",
       "  </div>",
       "</div>"
     ],
@@ -121,7 +121,7 @@
   "prefix": "g-tooltip",
     "body": [
       "<span class=\"tooltip\">",
-      "  <button class=\"tooltip__btn\" aria-describedby=\"$1\">$2</button>",
+      "  <button class=\"btn-reset tooltip__btn\" aria-describedby=\"$1\">$2</button>",
       "  <span class=\"tooltip__txt\" role=\"tooltip\" id=\"$1\">",
       "    <span class=\"visually-hidden\">Тултип: </span>",
       "    $3",
@@ -134,10 +134,10 @@
     "prefix": "g-tabs",
     "body": [
       "<div class=\"tabs\" data-tabs=\"$1\">",
-      "  <ul class=\"tabs__nav\">",
-      "    <li class=\"tabs__nav-item\"><button class=\"tabs__nav-btn\" type=\"button\">$2</button></li>",
-      "    <li class=\"tabs__nav-item\"><button class=\"tabs__nav-btn\" type=\"button\">$3</button></li>",
-      "    <li class=\"tabs__nav-item\"><button class=\"tabs__nav-btn\" type=\"button\">$4</button></li>",
+      "  <ul class=\"list-reset tabs__nav\">",
+      "    <li class=\"tabs__nav-item\"><button class=\"btn-reset tabs__nav-btn\" type=\"button\">$2</button></li>",
+      "    <li class=\"tabs__nav-item\"><button class=\"btn-reset tabs__nav-btn\" type=\"button\">$3</button></li>",
+      "    <li class=\"tabs__nav-item\"><button class=\"btn-reset tabs__nav-btn\" type=\"button\">$4</button></li>",
       "  </ul>",
       "  <div class=\"tabs__content\">",
       "    <div class=\"tabs__panel\">$5</div>",
