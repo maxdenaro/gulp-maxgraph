@@ -17,7 +17,6 @@ $browser-context: 16; // Default
   /* stylelint-disable-next-line declaration-block-no-duplicate-properties */
   background-image: image-set(
     /* stylelint-disable-next-line function-comma-newline-after */
-    "#{$pathToImage}.avif"type("image/avif"),
     "#{$pathToImage}.webp"type("image/webp"),
     "#{$pathToImage}.jpg"type("image/jpg")
   );
