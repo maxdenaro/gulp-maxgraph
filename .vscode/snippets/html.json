@@ -147,5 +147,15 @@
       "</div>"
     ],
     "description": "Snippet for basic tabs structure"
+  },
+  "transparent video (need special video-file)": {
+    "prefix": "g-tr-video",
+    "body": [
+      "<video playsinline preload=\"metadata\">",
+      "  <source src=\"/$1\" type=\"video/mp4; codecs=hvc1\">",
+      "  <source src=\"/$2\" type=\"video/webm\">",
+      "</video>"
+    ],
+    "description": "Snippet for transparent video"
   }
 }

@@ -1,22 +1,19 @@
-html {
-  box-sizing: border-box;
-}
-
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 .page {
   height: 100%;
   font-family: var(--font-family, sans-serif);
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 .page__body {
   margin: 0;
-  min-width: 320px;
+  min-width: 360px;
   min-height: 100%;
   font-size: 16px;
 }
@@ -82,10 +79,6 @@ a {
   margin: 0 auto;
   padding: 0 var(--container-offset);
   max-width: var(--container-width);
-}
-
-.js-focus-visible :focus:not(.focus-visible) {
-  outline: none;
 }
 
 .centered {

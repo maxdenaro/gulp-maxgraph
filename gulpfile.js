@@ -1,327 +1,57 @@
-const {
-  src,
-  dest,
-  series,
-  watch
-} = require('gulp');
-const autoprefixer = require('gulp-autoprefixer');
-const cleanCSS = require('gulp-clean-css');
-const del = require('del');
-const browserSync = require('browser-sync').create();
-const sass = require('sass');
-const gulpSass = require('gulp-sass');
-const svgSprite = require('gulp-svg-sprite');
-const svgmin = require('gulp-svgmin');
-const cheerio = require('gulp-cheerio');
-const replace = require('gulp-replace');
-const fileInclude = require('gulp-file-include');
-const rev = require('gulp-rev');
-const revRewrite = require('gulp-rev-rewrite');
-const revDel = require('gulp-rev-delete-original');
-const htmlmin = require('gulp-htmlmin');
-const gulpif = require('gulp-if');
-const notify = require('gulp-notify');
-const image = require('gulp-imagemin');
-const {
-  readFileSync
-} = require('fs');
-const typograf = require('gulp-typograf');
-const webp = require('gulp-webp');
-const mainSass = gulpSass(sass);
-const webpackStream = require('webpack-stream');
-const plumber = require('gulp-plumber');
-const path = require('path');
-const zip = require('gulp-zip');
-const rootFolder = path.basename(path.resolve());
+import gulp from 'gulp';
+import browserSync from 'browser-sync';
 
-// paths
-const srcFolder = './src';
-const buildFolder = './app';
-const paths = {
-  srcSvg: `${srcFolder}/img/svg/**.svg`,
-  srcImgFolder: `${srcFolder}/img`,
-  buildImgFolder: `${buildFolder}/img`,
-  srcScss: `${srcFolder}/scss/**/*.scss`,
-  buildCssFolder: `${buildFolder}/css`,
-  srcFullJs: `${srcFolder}/js/**/*.js`,
-  srcMainJs: `${srcFolder}/js/main.js`,
-  buildJsFolder: `${buildFolder}/js`,
-  srcPartialsFolder: `${srcFolder}/partials`,
-  resourcesFolder: `${srcFolder}/resources`,
-};
+import { paths } from './gulp/config/paths.js';
+import { clean } from './gulp/tasks/clean.js';
+import { svgSprites } from './gulp/tasks/sprite.js';
+import { styles } from './gulp/tasks/styles.js';
+import { stylesBackend } from './gulp/tasks/styles-backend.js';
+import { scripts } from './gulp/tasks/scripts.js';
+import { scriptsBackend } from './gulp/tasks/scripts-backend.js';
+import { resources } from './gulp/tasks/resources.js';
+import { images } from './gulp/tasks/images.js';
+import { webpImages } from './gulp/tasks/webp.js';
+import { htmlInclude } from './gulp/tasks/html-include.js';
+import { cacheTask } from './gulp/tasks/cache.js';
+import { rewrite } from './gulp/tasks/rewrite.js';
+import { htmlMinify } from './gulp/tasks/html-minify.js';
+import { zipFiles } from './gulp/tasks/zip.js';
 
-let isProd = false; // dev by default
-
-const clean = () => {
-  return del([buildFolder])
+global.app = {
+  gulp,
+  isProd: process.argv.includes('--build'),
+  paths,
 }
 
-//svg sprite
-const svgSprites = () => {
-  return src(paths.srcSvg)
-    .pipe(
-      svgmin({
-        js2svg: {
-          pretty: true,
-        },
-      })
-    )
-    .pipe(
-      cheerio({
-        run: function ($) {
-          $('[fill]').removeAttr('fill');
-          $('[stroke]').removeAttr('stroke');
-          $('[style]').removeAttr('style');
-        },
-        parserOptions: {
-          xmlMode: true
-        },
-      })
-    )
-    .pipe(replace('&gt;', '>'))
-    .pipe(svgSprite({
-      mode: {
-        stack: {
-          sprite: "../sprite.svg"
-        }
-      },
-    }))
-    .pipe(dest(paths.buildImgFolder));
-}
-
-// scss styles
-const styles = () => {
-  return src(paths.srcScss, { sourcemaps: !isProd })
-    .pipe(plumber(
-      notify.onError({
-        title: "SCSS",
-        message: "Error: <%= error.message %>"
-      })
-    ))
-    .pipe(mainSass())
-    .pipe(autoprefixer({
-      cascade: false,
-      grid: true,
-      overrideBrowserslist: ["last 5 versions"]
-    }))
-    .pipe(gulpif(isProd, cleanCSS({
-      level: 2
-    })))
-    .pipe(dest(paths.buildCssFolder, { sourcemaps: '.' }))
-    .pipe(browserSync.stream());
-};
-
-// styles backend
-const stylesBackend = () => {
-  return src(paths.srcScss)
-    .pipe(plumber(
-      notify.onError({
-        title: "SCSS",
-        message: "Error: <%= error.message %>"
-      })
-    ))
-    .pipe(mainSass())
-    .pipe(autoprefixer({
-      cascade: false,
-      grid: true,
-      overrideBrowserslist: ["last 5 versions"]
-    }))
-    .pipe(dest(paths.buildCssFolder))
-    .pipe(browserSync.stream());
-};
-
-// scripts
-const scripts = () => {
-  return src(paths.srcMainJs)
-    .pipe(plumber(
-      notify.onError({
-        title: "JS",
-        message: "Error: <%= error.message %>"
-      })
-    ))
-    .pipe(webpackStream({
-      mode: isProd ? 'production' : 'development',
-      output: {
-        filename: 'main.js',
-      },
-      module: {
-        rules: [{
-          test: /\.m?js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['@babel/preset-env', {
-                  targets: "defaults"
-                }]
-              ]
-            }
-          }
-        }]
-      },
-      devtool: !isProd ? 'source-map' : false
-    }))
-    .on('error', function (err) {
-      console.error('WEBPACK ERROR', err);
-      this.emit('end');
-    })
-    .pipe(dest(paths.buildJsFolder))
-    .pipe(browserSync.stream());
-}
-
-// scripts backend
-const scriptsBackend = () => {
-  return src(paths.srcMainJs)
-    .pipe(plumber(
-      notify.onError({
-        title: "JS",
-        message: "Error: <%= error.message %>"
-      })
-    ))
-    .pipe(webpackStream({
-      mode: 'development',
-      output: {
-        filename: 'main.js',
-      },
-      module: {
-        rules: [{
-          test: /\.m?js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['@babel/preset-env', {
-                  targets: "defaults"
-                }]
-              ]
-            }
-          }
-        }]
-      },
-      devtool: false
-    }))
-    .on('error', function (err) {
-      console.error('WEBPACK ERROR', err);
-      this.emit('end');
-    })
-    .pipe(dest(paths.buildJsFolder))
-    .pipe(browserSync.stream());
-}
-
-const resources = () => {
-  return src(`${paths.resourcesFolder}/**`)
-    .pipe(dest(buildFolder))
-}
-
-const images = () => {
-  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png,svg}`])
-    .pipe(gulpif(isProd, image([
-      image.mozjpeg({
-        quality: 80,
-        progressive: true
-      }),
-      image.optipng({
-        optimizationLevel: 2
-      }),
-    ])))
-    .pipe(dest(paths.buildImgFolder))
-};
-
-const webpImages = () => {
-  return src([`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`])
-    .pipe(webp())
-    .pipe(dest(paths.buildImgFolder))
-};
-
-const htmlInclude = () => {
-  return src([`${srcFolder}/*.html`])
-    .pipe(fileInclude({
-      prefix: '@',
-      basepath: '@file'
-    }))
-    .pipe(typograf({
-      locale: ['ru', 'en-US']
-    }))
-    .pipe(dest(buildFolder))
-    .pipe(browserSync.stream());
-}
-
-const watchFiles = () => {
+const watcher = () => {
   browserSync.init({
     server: {
-      baseDir: `${buildFolder}`
+      baseDir: `${app.paths.base.build}`
     },
+    notify: false,
+    port: 3000,
   });
 
-  watch(paths.srcScss, styles);
-  watch(paths.srcFullJs, scripts);
-  watch(`${paths.srcPartialsFolder}/*.html`, htmlInclude);
-  watch(`${srcFolder}/*.html`, htmlInclude);
-  watch(`${paths.resourcesFolder}/**`, resources);
-  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png,svg}`, images);
-  watch(`${paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, webpImages);
-  watch(paths.srcSvg, svgSprites);
+  gulp.watch(app.paths.srcScss, styles);
+  gulp.watch(app.paths.srcFullJs, scripts);
+  gulp.watch(`${app.paths.srcPartialsFolder}/*.html`, htmlInclude);
+  gulp.watch(`${app.paths.base.src}/*.html`, htmlInclude);
+  gulp.watch(`${app.paths.resourcesFolder}/**`, resources);
+  gulp.watch(`${app.paths.srcImgFolder}/**/**.{jpg,jpeg,png,svg}`, images);
+  gulp.watch(`${app.paths.srcImgFolder}/**/**.{jpg,jpeg,png}`, webpImages);
+  gulp.watch(app.paths.srcSvg, svgSprites);
 }
 
-const cache = () => {
-  return src(`${buildFolder}/**/*.{css,js,svg,png,jpg,jpeg,webp,woff2}`, {
-      base: buildFolder
-    })
-    .pipe(rev())
-    .pipe(revDel())
-    .pipe(dest(buildFolder))
-    .pipe(rev.manifest('rev.json'))
-    .pipe(dest(buildFolder));
-};
+const dev = gulp.series(clean, htmlInclude, scripts, styles, resources, images, webpImages, svgSprites, watcher);
+const backend = gulp.series(clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, webpImages, svgSprites);
+const build = gulp.series(clean, htmlInclude, scripts, styles, resources, images, webpImages, svgSprites, htmlMinify);
+const cache = gulp.series(cacheTask, rewrite);
+const zip = zipFiles;
 
-const rewrite = () => {
-  const manifest = readFileSync('app/rev.json');
-  src(`${paths.buildCssFolder}/*.css`)
-    .pipe(revRewrite({
-      manifest
-    }))
-    .pipe(dest(paths.buildCssFolder));
-  return src(`${buildFolder}/**/*.html`)
-    .pipe(revRewrite({
-      manifest
-    }))
-    .pipe(dest(buildFolder));
-}
+export { dev }
+export { build }
+export { backend }
+export { cache }
+export { zip }
 
-const htmlMinify = () => {
-  return src(`${buildFolder}/**/*.html`)
-    .pipe(htmlmin({
-      collapseWhitespace: true
-    }))
-    .pipe(dest(buildFolder));
-}
-
-const zipFiles = (done) => {
-  del.sync([`${buildFolder}/*.zip`]);
-  return src(`${buildFolder}/**/*.*`, {})
-    .pipe(plumber(
-      notify.onError({
-        title: "ZIP",
-        message: "Error: <%= error.message %>"
-      })
-    ))
-    .pipe(zip(`${rootFolder}.zip`))
-    .pipe(dest(buildFolder));
-}
-
-const toProd = (done) => {
-  isProd = true;
-  done();
-};
-
-exports.default = series(clean, htmlInclude, scripts, styles, resources, images, webpImages, svgSprites, watchFiles);
-
-exports.backend = series(clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, webpImages, svgSprites)
-
-exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, webpImages, svgSprites, htmlMinify);
-
-exports.cache = series(cache, rewrite);
-
-exports.zip = zipFiles;
+gulp.task('default', dev);
