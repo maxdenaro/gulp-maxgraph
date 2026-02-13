@@ -10,10 +10,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap);
-  }
-
-  .#{map.get($options, itemsClass)} {
-    width: calc((100% - ((var(--elems) - 1) * var(--gap))) / (var(--elems)));
 
     @media (max-width: map.get($options, tablet)) {
       --gap: #{map.get($options, tabletGap)};
@@ -24,6 +20,10 @@
       --gap: #{map.get($options, mobileGap)};
       --elems: #{map.get($options, mobileElems)};
     }
+  }
+
+  .#{map.get($options, itemsClass)} {
+    width: calc((100% - ((var(--elems) - 1) * var(--gap))) / (var(--elems)));
   }
 }
 
